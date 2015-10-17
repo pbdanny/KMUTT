@@ -67,8 +67,8 @@ RankEntro <- function(induction = data.frame(), target = character(), class ){
   } # Next child attribute entropy calcualtion
   
   # Order output with descendgin entropy 
-  df.out <<- df.out[order(df.out$IG, decreasing = TRUE),]
+  df.out <- df.out[order(df.out$IG, decreasing = TRUE),]
   # Reset rownames
-  row.names(df.out) <<- NULL
+  row.names(df.out) <- NULL
   return(df.out)
 }
