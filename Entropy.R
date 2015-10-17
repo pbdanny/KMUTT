@@ -7,7 +7,7 @@
 #                "stalk-color-below-ring","veil-type","veil-color","ring-number",
 #                "ring-type","spore-print-color","population","habitat")
 
-weightedEntro <- function(li = data.frame(), target = character(), class){
+weightedEntro <- function(li = data.frame(), target = character(), class, par.n){
   # prop = no. of observation with desire target attribute / no. of all observation
   # find no. of observation with desired target by create logical vector 
   # and test if each element == desire target attribute
@@ -29,16 +29,16 @@ weightedEntro <- function(li = data.frame(), target = character(), class){
 # class = desired value in the target attribute
 # return dataframe of attributes and IG
 
-RankEntro <- function(induction = data.frame(), target = character(), class ){
+RankEntro <- function(induction = data.frame(), target = character(), class){
   
   # define output data structure
   df.out <- data.frame(Attrib = character(), Entropy = numeric(), stringsAsFactors = FALSE)
   
   # Store nrow of induction in par.n for weighted calculation
-  par.n <<- nrow(induction)
+  par.n <- nrow(induction)
   
   # Calculate parent entropy
-  parent.entropy <- weightedEntro(induction, target, class)
+  parent.entropy <- weightedEntro(induction, target, class, par.n)
   
   # The most outer for-loop traverse all attribute except the first on which fixed as target attribute
   for (i in seq_along(induction)) {
@@ -55,7 +55,7 @@ RankEntro <- function(induction = data.frame(), target = character(), class ){
       data.split <- split(induction.subset, induction.subset[[Attrib]])
       
       # Calculate entropy of data.split
-      childEntropy <- sapply(data.split, weightedEntro , target=target, class=class)
+      childEntropy <- sapply(data.split, weightedEntro , target=target, class=class, par.n = par.n )
       
       # IG = parent entropy - sum of each child Entroyp
       IG <- parent.entropy - sum(childEntropy, na.rm = TRUE)
